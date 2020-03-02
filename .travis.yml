@@ -1,0 +1,14 @@
+sudo: required
+
+language: bash
+
+services:
+  - docker
+
+install:
+  - git clone https://github.com/fastphat/android-container.git ~/android-container
+
+script:
+  - docker build -t android-container:sunflower .
+  - git clone https://github.com/android/sunflower ~/sunflower
+  - docker run --privileged -it --rm -v $PWD:/data android-container:sunflower bash -c '. /start.sh && /data/gradlew test connectedAndroidTest -p /data'
